@@ -1,0 +1,47 @@
+#!/bin/bash
+
+#CREAREMOS UNA FUNCION PARA QUE NOS MUESTRE EL MENSAJE DE AYUDA
+
+ayuda() {
+
+cat << AYUDA
+SYNTAXIS DEL COMANDO
+	$0 NOMBRE_01 [NOMBRE_02] ... [NOMBRE_N]
+DESCRIPCION
+	Imprime en pantalla "Hola NOMBRE_1, NOMBRE_2, ..., NOMBRE_N" por pantalla
+CODIGOS DE RETORNO
+	1: ERROR =>  Si el número de parámetros es menor que 1
+	2: ERROR =>  El usuario ingresado no esta conectado
+AYUDA
+
+}
+
+if [ $# -le 0 ]; then
+	echo "Debes introducir mas de un parametro"
+	ayuda
+	exit 1
+fi
+
+MENSAJE="Hola "
+PRIMERO=1
+
+while [ -n "$1" ]; do
+
+	USUARIO_CONECTADO=`./usuarioconectado.sh $1`
+	if [ "$USUARIO_CONECTADO" -eq "NO" ]; then
+		echo "El usuario $1 no esta conectado"
+		ayuda
+		exit 2
+	fi
+	if [ $PRIMERO -eq 1 ]; then
+		MENSAJE="$MENSAJE $1"
+		PRIMERO=0
+	else
+		MENSAJE="$MENSAJE, $1"
+	fi
+	
+	shift
+done
+
+
+echo "$MENSAJE !"

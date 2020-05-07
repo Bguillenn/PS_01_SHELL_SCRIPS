@@ -1,0 +1,38 @@
+#!bin/bash
+
+
+#CREAMOS LA FUNCION AYUDA PARA MOSTRAR EL MENSAJE
+ayuda() {
+cat << AYUDA
+SYNTAXIS
+	$0 NOMBRE_DE_USUARIO
+DESCRIPCION
+	Retorna SI si el usuario mandado de parametro esta registrado en el sistema
+	Retorna NO si el usuario mandado de parametro no esta registrado en el sistema
+ERRORES
+	1: ERROR => No se ingreso parametros o se ingreso mas de uno
+AYUDA
+}
+
+#VALIDAMOS QUE HAYA INGRESADO UNICAMENTE UN PARAMETRO
+if [ $# -ne 1 ]; then
+	echo "No ingreso parametros se requiere 1"
+	ayuda
+	exit 1
+fi
+
+#EN LA VARIABLE USUARIO_SISTEMA GUARDAMOS EL RESULTADO DE LA INSTRUCCION
+#GREP QUE BUSCA EL PARAMETRO INTRODUCIDO EN UN ARCHIVO QUE GUARDA TODOS
+#LOS USUARIOS REGISTRADOS EN EL SISTEMA
+
+USUARIO_SISTEMA=`grep -E ^$1: /etc/passwd`
+
+#COMPROBAMOS SI LA VARIABLE USUARIO SISTEMA TIENE CONTENIDO
+#EN CASO NO TENGA ES QUE NO ENCONTRO AL USUARIO
+#Y EN CASO TENGA SIGNIFICA QUE ENCONTRO AL USUARIO
+#DEVOLVEMOS LOS VALORES CORREPOSNDIENTES
+if [ -z "$USUARIO_SISTEMA" ]; then
+	echo "NO"
+else
+	echo "SI"
+fi

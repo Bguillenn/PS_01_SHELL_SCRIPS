@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#CREAMOS LA FUNCION AYUDA PARA MOSTRAR LA AYUDA DEL SCRIPT
+ayuda() {
+cat << AYUDA
+SINTAXYS DEL COMANDO
+	$0 [USER_NAME]
+DESCRIPCION
+	Devuelve "SI" si el usuario mandado por parametro esta conectado
+	Devuelve "NO" si el usuario mandado por parametro no esta conectado
+ERRORES
+	1: ERROR => NO SE INGRESO PARAMETROS O SE INGRESO MAS DE UNO
+AYUDA
+}
+
+#VERIFICAMOS QUE HAYA INGRSADO UNICAMENTE UN PARAMETRO NO MAS NI MENOS
+if [ $# -ne 1 ]
+then
+	echo "(1): Debe ingresar un solo parametro"
+	ayuda
+	exit 1
+fi
+
+#UTILIZAMOS LA MISMA INSTRUCCION QUE EL EJERCICIO ANTERIOR PARA VALIDAR SI HAY
+#UN USUARIO CONECTADO
+USUARIO_CONECTADO=`who | grep $1`
+
+#COMPROBAMOS SI LA VARIABE USUARIO_CONECTADO TIENE CONTENIDO
+#Y MOSTRAMOS EL MENSAJE CORRESPONDIENTE
+if [ -z "$USUARIO_CONECTADO" ]
+then
+	echo "NO"
+else
+	echo "SI"
+fi
